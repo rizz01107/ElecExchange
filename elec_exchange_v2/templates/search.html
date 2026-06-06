@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+{% block title %}Search - ElecExchange{% endblock %}
+{% block content %}
+<div class="container py-5">
+    <h4 class="fw-bold mb-4"><i class="bi bi-search me-2"></i>Search Products</h4>
+    <form action="/search" method="GET" class="mb-4">
+        <div class="row g-2">
+            <div class="col-md-8">
+                <input type="text" name="q" class="form-control form-control-lg" placeholder="Search by name, category..." value="{{ q }}">
+            </div>
+            <div class="col-md-3">
+                <select name="cat" class="form-select form-select-lg">
+                    <option value="">All Categories</option>
+                    {% for c in cats %}<option value="{{ c.category }}" {{ 'selected' if cat==c.category }}>{{ c.category }}</option>{% endfor %}
+                </select>
+            </div>
+            <div class="col-md-1">
+                <button class="btn btn-primary w-100 h-100"><i class="bi bi-search"></i></button>
+            </div>
+        </div>
+    </form>
+
+    {% if q or cat %}
+        {% if not results %}
+        <div class="text-center py-5 text-muted">
+            <i class="bi bi-search fs-1"></i>
+            <p class="mt-2">No results found for "{{ q }}".</p>
+            <a href="/" class="btn btn-outline-primary mt-2">View All Products</a>
+        </div>
+        {% else %}
+        <p class="text-muted mb-3">{{ results|length }} result(s) found</p>
+        {% set icons = {'Mobile':'bi-phone','Laptop':'bi-laptop','Camera':'bi-camera','Audio':'bi-speaker','Tablet':'bi-tablet','TV':'bi-tv'} %}
+        <div class="row g-4">
+            {% for p in results %}
+            <div class="col-sm-6 col-md-4 col-lg-3">
+                <div class="card product-card h-100">
+                    {% if p.image and p.image != '' %}<img src="/static/uploads/{{ p.image }}" alt="{{ p.title }}">
+                    {% else %}<div class="no-image"><i class="bi {{ icons.get(p.category,'bi-box') }}"></i></div>{% endif %}
+                    <div class="card-body d-flex flex-column">
+                        <span class="cat-badge mb-2">{{ p.category }}</span>
+                        <h6 class="fw-semibold mb-1">{{ p.title }}</h6>
+                        <p class="text-muted small mb-2" style="flex:1">{{ p.description[:65] }}...</p>
+                        <span class="price-badge mb-2">Rs. {{ "{:,.0f}".format(p.price) }}</span>
+                        <a href="/product/{{ p.id }}" class="btn btn-primary btn-sm mt-2">View Details</a>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        {% endif %}
+    {% endif %}
+</div>
+{% endblock %}

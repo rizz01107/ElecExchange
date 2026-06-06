@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+{% block title %}My Profile - ElecExchange{% endblock %}
+{% block content %}
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="form-card">
+                <h4 class="fw-bold mb-4" style="color:#0077b6;"><i class="bi bi-person-circle me-2"></i>My Profile</h4>
+                <form method="POST">
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold">Full Name</label>
+                        <input type="text" name="name" class="form-control" value="{{ user.name }}" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold">Email Address</label>
+                        <input class="form-control bg-light" value="{{ user.email }}" disabled>
+                        <small class="text-muted">Email cannot be changed</small>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold">Phone Number</label>
+                        <input type="text" name="phone" class="form-control" value="{{ user.phone or '' }}">
+                    </div>
+                    <hr>
+                    <h6 class="fw-semibold mb-3">Change Password <span class="text-muted fw-normal">(Optional)</span></h6>
+                    <div class="mb-3">
+                        <label class="form-label">Current Password</label>
+                        <input type="password" name="cur_pass" class="form-control" placeholder="Enter current password">
+                    </div>
+                    <div class="mb-4">
+                        <label class="form-label">New Password</label>
+                        <input type="password" name="new_pass" class="form-control" placeholder="Enter new password">
+                    </div>
+                    <button type="submit" class="btn btn-primary w-100 fw-semibold">Save Changes</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

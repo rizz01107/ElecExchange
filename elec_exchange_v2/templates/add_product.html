@@ -1,0 +1,59 @@
+{% extends 'base.html' %}
+{% block title %}Sell Item - ElecExchange{% endblock %}
+{% block content %}
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-md-7">
+            <div class="form-card">
+                <h3 class="fw-bold mb-4" style="color:#0077b6;"><i class="bi bi-plus-circle me-2"></i>List Your Item for Sale</h3>
+                <form method="POST" enctype="multipart/form-data">
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold">Product Title *</label>
+                        <input type="text" name="title" class="form-control" placeholder="e.g. Samsung Galaxy A32" required>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label fw-semibold">Category *</label>
+                            <select name="category" class="form-select" required>
+                                <option value="">Select category...</option>
+                                <option>Mobile</option>
+                                <option>Laptop</option>
+                                <option>Camera</option>
+                                <option>Audio</option>
+                                <option>Tablet</option>
+                                <option>TV</option>
+                                <option>Other</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label fw-semibold">Condition *</label>
+                            <select name="condition_info" class="form-select" required>
+                                <option value="Excellent">Excellent — Like new</option>
+                                <option value="Good" selected>Good — Minor wear</option>
+                                <option value="Fair">Fair — Visible wear, fully working</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold">Price (PKR) *</label>
+                        <input type="number" name="price" class="form-control" placeholder="e.g. 35000" min="1" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold">Description</label>
+                        <textarea name="description" class="form-control" rows="4" placeholder="Describe your item: age, condition, what's included..."></textarea>
+                    </div>
+                    <div class="mb-4">
+                        <label class="form-label fw-semibold">Photo (Optional)</label>
+                        <input type="file" name="image" class="form-control" accept="image/*" onchange="previewImg(this)">
+                        <img id="prev" src="" style="display:none;max-height:160px;margin-top:10px;border-radius:8px;">
+                    </div>
+                    <button type="submit" class="btn btn-primary w-100 py-2 fw-semibold">
+                        <i class="bi bi-check-circle me-2"></i>List Item
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<script>function previewImg(i){if(i.files[0]){var r=new FileReader();r.onload=function(e){var p=document.getElementById('prev');p.src=e.target.result;p.style.display='block'};r.readAsDataURL(i.files[0])}}</script>
+{% endblock %}

@@ -1,0 +1,47 @@
+{% extends 'admin/base_admin.html' %}
+{% block admin_content %}
+<h4 class="fw-bold mb-4"><i class="bi bi-bag me-2"></i>Manage Transactions</h4>
+{% if not txns %}
+<p class="text-muted">No transactions found.</p>
+{% else %}
+<div class="card border-0 shadow-sm">
+    <div class="table-responsive">
+        <table class="table table-hover align-middle mb-0">
+            <thead style="background:linear-gradient(135deg,#0077b6,#00b4a0);color:white;">
+                <tr><th>ID</th><th>Product</th><th>Buyer</th><th>Seller</th><th>Amount</th><th>Payment</th><th>Status</th><th>Refund</th><th>Actions</th></tr>
+            </thead>
+            <tbody>
+                {% for t in txns %}
+                <tr>
+                    <td>{{ t.id }}</td>
+                    <td>{{ t.title }}</td>
+                    <td>{{ t.buyer }}</td>
+                    <td>{{ t.seller }}</td>
+                    <td>Rs. {{ "{:,.0f}".format(t.amount) }}</td>
+                    <td><small class="text-muted">{{ t.payment_method }}</small></td>
+                    <td>
+                        {% if t.status=='completed' %}<span class="badge bg-success">Completed</span>
+                        {% elif t.status=='refunded' %}<span class="badge bg-info">Refunded</span>
+                        {% else %}<span class="badge bg-warning text-dark">Pending</span>{% endif %}
+                    </td>
+                    <td>
+                        {% if t.refund_status=='requested' %}<span class="badge bg-danger">Requested</span>
+                        {% elif t.refund_status=='approved' %}<span class="badge bg-info">Approved</span>
+                        {% else %}<span class="text-muted">—</span>{% endif %}
+                    </td>
+                    <td>
+                        {% if t.status=='pending' %}
+                        <a href="/admin/transactions?complete={{ t.id }}" class="btn btn-sm btn-outline-success me-1" onclick="return confirm('Mark as completed?')"><i class="bi bi-check-lg"></i> Complete</a>
+                        {% endif %}
+                        {% if t.refund_status=='requested' %}
+                        <a href="/admin/transactions?refund={{ t.id }}" class="btn btn-sm btn-outline-danger" onclick="return confirm('Approve this refund?')"><i class="bi bi-arrow-counterclockwise"></i> Approve Refund</a>
+                        {% endif %}
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endif %}
+{% endblock %}
